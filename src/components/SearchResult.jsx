@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "./Pagination";
+import { SearchQueryContext } from "../context/SearchQueryContext";
 
 const SearchResult = (props) => {
   const { text } = props;
+  const { setPageCountIncDec } = useContext(SearchQueryContext);
+  const [isNoData, setIsNotData] = useState(false);
   const [page, setPage] = useState(1); // Tracks the current page
   const [searchResultData, setSearchResultData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -12,41 +15,48 @@ const SearchResult = (props) => {
   // search text change effect
   useEffect(() => {
     // call the search result api method
-    if (text) fetchSearchResult();
+    if (text) {
+      setPage(1);
+      if (setPageCountIncDec)
+        setPageCountIncDec({
+          value: 1,
+          action: "plus",
+        });
+    }
   }, [text]);
   // function to handle the search text based get the Google API response
   const fetchSearchResult = async () => {
     setIsLoading(true);
     const API_KEY = import.meta.env.VITE_API_KEY;
     const CX = import.meta.env.VITE_SEARCH_ID;
-    const startIndex = (page - 1) * 10 + 1;
-    // console.log("current page - ", startIndex);
+    const startIndex = page;
 
     try {
-      //   console.log("search j ");
-
       const response = await fetch(
         `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${text}&start=${startIndex}`
       );
       const data = await response.json();
-      //   console.log("data - ", data);
       setSearchResultData(data);
-      //   setSearchResultData(tempData);
-      //   const resultPages = Math.ceil(
-      //     parseInt(tempData?.searchInformation?.totalResults) / 10
-      //   );
-      //   setTotalPages(resultPages);
     } catch (error) {
+      setIsNotData(true);
       console.error("Error fetching search results:", error);
     } finally {
       setIsLoading(false);
     }
-    // console.log("search - ", text);
   };
+  useEffect(() => {
+    if (searchResultData?.searchInformation?.totalResults) {
+      setTotalPages(
+        Math.ceil(
+          parseInt(searchResultData?.searchInformation?.totalResults) / 10
+        )
+      );
+    }
+  }, [searchResultData]);
 
   useEffect(() => {
-    // console.log(searchResultData?.items);
-  }, [searchResultData]);
+    if (page > 0 && text) fetchSearchResult();
+  }, [page, text]);
   return (
     <div className="w-full pt-3 pb-3">
       {" "}
@@ -99,7 +109,7 @@ const SearchResult = (props) => {
                 </div>
               );
             })
-          : Array.from({ length: 5 }).map((_, index) => (
+          : Array.from({ length: 15 }).map((_, index) => (
               <div
                 key={index}
                 className="w-full animate-pulse flex flex-col gap-3"
@@ -114,7 +124,13 @@ const SearchResult = (props) => {
               </div>
             ))}{" "}
       </div>
-      {/* <Pagination totalPages={totalPages} /> */}
+      {!isLoading && !isNoData && (
+        <Pagination
+          totalPages={totalPages}
+          currentPage={page}
+          setCurrentPage={setPage}
+        />
+      )}
     </div>
   );
 };
