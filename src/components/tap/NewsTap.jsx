@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Pagination from "./Pagination";
-import { SearchQueryContext } from "../context/SearchQueryContext";
+import Pagination from "../Pagination";
+import { SearchQueryContext } from "../../context/SearchQueryContext";
 
-const SearchResult = (props) => {
+const NewsTap = (props) => {
   const { text } = props;
   const { setPageCountIncDec } = useContext(SearchQueryContext);
   const [isNoData, setIsNotData] = useState(false);
@@ -33,9 +33,11 @@ const SearchResult = (props) => {
 
     try {
       const response = await fetch(
-        `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${text}&start=${startIndex}`
+        `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${text}+site:news.google.com&start=${startIndex}`
       );
       const data = await response.json();
+      console.log("new tap result - ", data);
+
       setSearchResultData(data);
     } catch (error) {
       setIsNotData(true);
@@ -135,4 +137,4 @@ const SearchResult = (props) => {
   );
 };
 
-export default SearchResult;
+export default NewsTap;

@@ -7,7 +7,7 @@ const SearchComponent = (props) => {
   return (
     <div className="relative w-full ">
       <input
-        className="w-full p-3 pl-12 pr-10 text-lg border border-gray-300 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+        className="w-full p-3 pl-12 pr-10 text-lg bg-transparent border border-gray-300 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-blue-600"
         onChange={(e) => setSearchQuery && setSearchQuery(e.target.value)}
         value={searchQuery}
       />

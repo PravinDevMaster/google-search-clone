@@ -21,6 +21,7 @@ const Pagination = (props) => {
     isLoading = false,
     setCurrentPage,
     currentPage,
+    fullWith = false,
   } = props;
 
   const { pagecountIncDec, setPageCountIncDec } =
@@ -66,12 +67,19 @@ const Pagination = (props) => {
   };
 
   return (
-    <div className="w-full lg:w-4/6 mt-5 flex justify-center pt-3 ">
+    <div
+      className={`w-full lg:${
+        fullWith ? "w-full" : "w-4/6"
+      } mt-5 flex justify-center pt-3 `}
+    >
       <div className="flex flex-col">
         <h1 className="text-3xl">
           <span className="text-googleBlue">G</span>
-          {/* <span className="text-googleRed">o</span> */}
-          {numbers &&
+          {totalPages < 10 && <span className="text-googleRed">o</span>}
+          {totalPages < 10 && <span className="text-googleYellow">o</span>}
+
+          {totalPages > 10 &&
+            numbers &&
             numbers.length > 0 &&
             numbers.map((item, index) => {
               return (
@@ -100,7 +108,8 @@ const Pagination = (props) => {
               className="hover:text-googleBlue cursor-pointer"
             />
           )}
-          {numbers &&
+          {totalPages > 10 &&
+            numbers &&
             numbers.length > 0 &&
             numbers.map((item, index) => {
               return (

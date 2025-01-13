@@ -8,7 +8,9 @@ import { FcSearch } from "react-icons/fc";
 import { FaBook, FaImage, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 import { RiFileTextLine } from "react-icons/ri";
 import { SearchQueryContext } from "../context/SearchQueryContext";
-import SearchResult from "../components/SearchResult";
+import SearchResult from "../components/tap/SearchResult";
+import NewsTap from "../components/tap/NewsTap";
+import BooksTap from "../components/tap/BooksTap";
 
 const SearchPage = () => {
   const [activeMenu, setActiveMenu] = useState("all"); //active menu handle state
@@ -50,10 +52,18 @@ const SearchPage = () => {
     switch (activeMenu) {
       case "all":
         return <SearchResult text={text} />;
+      case "news":
+        return <NewsTap text={text} />;
+      case "books":
+        return <BooksTap text={text} />;
       default:
         return <p>No Data Found!</p>;
     }
   };
+
+  useEffect(() => {
+    console.log("active menu - ", activeMenu);
+  }, [activeMenu]);
 
   return (
     <div className="p-2 sm:p-5">
@@ -92,10 +102,10 @@ const SearchPage = () => {
                   onMouseLeave={() => setHoverMenu("active")}
                   // onMouseEnter={() => setHoverMenu(menu?.text)}
                   onMouseEnter={() => setHoverMenu(menu?.text)}
-                  // onClick={() => {
-                  //   setActiveMenu(menu?.text);
-                  //   setHoverMenu("active");
-                  // }}
+                  onClick={() => {
+                    setActiveMenu(menu?.text);
+                    setHoverMenu("active");
+                  }}
                   key={index}
                   className={`relative flex gap-1 sm:gap-2 pb-1 pr-2  hover:text-googleBlue search-menu-hover-underline ${
                     (menu?.text === activeMenu && hoverMenu === "active") ||
