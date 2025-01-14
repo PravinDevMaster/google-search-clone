@@ -1,9 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
 import { SearchQueryContext } from "../../context/SearchQueryContext";
-import { tempData } from "../../helper/ArrayHelper";
-import { MdOutlineImageNotSupported } from "react-icons/md";
 import { CiImageOn } from "react-icons/ci";
 
 const BooksTap = (props) => {
@@ -32,7 +29,7 @@ const BooksTap = (props) => {
     setIsLoading(true);
     const API_KEY = import.meta.env.VITE_API_KEY;
     const CX = import.meta.env.VITE_SEARCH_ID;
-    const startIndex = page;
+    const startIndex = page <= 1 ? page : page * 10;
 
     try {
       const response = await fetch(

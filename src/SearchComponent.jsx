@@ -13,11 +13,9 @@ const SearchComponent = () => {
         `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${searchQuery}`
       );
       const data = await response.json();
-      // console.log("data - ", data);
     } catch (error) {
       console.error("Error fetching search results:", error);
     }
-    // console.log("search - ", searchQuery);
   };
 
   return (

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Pagination from "../Pagination";
 import { SearchQueryContext } from "../../context/SearchQueryContext";
 
-const NewsTap = (props) => {
+const WebTap = (props) => {
   const { text } = props;
   const { setPageCountIncDec } = useContext(SearchQueryContext);
   const [isNoData, setIsNotData] = useState(false);
@@ -33,10 +33,9 @@ const NewsTap = (props) => {
 
     try {
       const response = await fetch(
-        `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${text}+site:news.google.com&start=${startIndex}`
+        `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${CX}&q=${text}&start=${startIndex}`
       );
       const data = await response.json();
-
       setSearchResultData(data);
     } catch (error) {
       setIsNotData(true);
@@ -136,4 +135,4 @@ const NewsTap = (props) => {
   );
 };
 
-export default NewsTap;
+export default WebTap;

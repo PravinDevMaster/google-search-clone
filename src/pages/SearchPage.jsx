@@ -1,16 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
 import GoogleText from "../components/GoogleText";
 import SearchComponent from "../components/SearchComponent";
-import { BsFillGrid3X3GapFill } from "react-icons/bs";
+import { BsFillGrid3X3GapFill, BsGlobe2 } from "react-icons/bs";
 import { IoPersonSharp } from "react-icons/io5";
 import { searchMenuList } from "../helper/ArrayHelper";
 import { FcSearch } from "react-icons/fc";
-import { FaBook, FaImage, FaMapMarkerAlt, FaSearch } from "react-icons/fa";
+import {
+  FaBook,
+  FaImage,
+  FaMapMarkerAlt,
+  FaSearch,
+  FaYoutube,
+} from "react-icons/fa";
 import { RiFileTextLine } from "react-icons/ri";
 import { SearchQueryContext } from "../context/SearchQueryContext";
 import SearchResult from "../components/tap/SearchResult";
 import NewsTap from "../components/tap/NewsTap";
 import BooksTap from "../components/tap/BooksTap";
+import ImageTab from "../components/tap/ImageTap";
+import VideoTap from "../components/tap/WebTap";
 
 const SearchPage = () => {
   const [activeMenu, setActiveMenu] = useState("all"); //active menu handle state
@@ -28,8 +36,8 @@ const SearchPage = () => {
         return <RiFileTextLine />;
       case "book":
         return <FaBook />;
-      case "map":
-        return <FaMapMarkerAlt />;
+      case "web":
+        return <BsGlobe2 />;
       default:
         return <FcSearch />;
     }
@@ -56,14 +64,14 @@ const SearchPage = () => {
         return <NewsTap text={text} />;
       case "books":
         return <BooksTap text={text} />;
+      case "images":
+        return <ImageTab text={text} />;
+      case "web":
+        return <VideoTap text={text} />;
       default:
         return <p>No Data Found!</p>;
     }
   };
-
-  useEffect(() => {
-    console.log("active menu - ", activeMenu);
-  }, [activeMenu]);
 
   return (
     <div className="p-2 sm:p-5">
